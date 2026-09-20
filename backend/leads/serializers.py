@@ -1,20 +1,11 @@
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
 
+from users.serializers import UserBriefSerializer
+
 from .models import Lead
 
 User = get_user_model()
-
-
-class AssignedToSerializer(serializers.ModelSerializer):
-    name = serializers.SerializerMethodField()
-
-    class Meta:
-        model = User
-        fields = ["id", "name"]
-
-    def get_name(self, obj):
-        return obj.get_full_name() or obj.username
 
 
 class LeadSerializer(serializers.ModelSerializer):
@@ -44,7 +35,7 @@ class LeadSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         representation = super().to_representation(instance)
         representation["assigned_to"] = (
-            AssignedToSerializer(instance.assigned_to).data
+            UserBriefSerializer(instance.assigned_to).data
             if instance.assigned_to
             else None
         )
