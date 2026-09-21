@@ -24,6 +24,7 @@ urlpatterns = [
     path("api/leads/", include("leads.urls")),
     path("api/properties/", include("properties.urls")),
     path("api/lead-properties/", include(lead_property_router.urls)),
+    path("api/tasks/", include("tasks.urls")),
 ]
 
 if settings.DEBUG:
