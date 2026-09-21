@@ -9,14 +9,21 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path
+from rest_framework.routers import DefaultRouter
+
+from leads.views import LeadPropertyViewSet
 
 from .views import health_check
+
+lead_property_router = DefaultRouter()
+lead_property_router.register("", LeadPropertyViewSet, basename="lead-property")
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/health/", health_check, name="health-check"),
     path("api/leads/", include("leads.urls")),
     path("api/properties/", include("properties.urls")),
+    path("api/lead-properties/", include(lead_property_router.urls)),
 ]
 
 if settings.DEBUG:

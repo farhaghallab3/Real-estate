@@ -3,6 +3,7 @@ import os
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
 
+from leads.serializers import LeadPropertySerializer
 from users.serializers import UserBriefSerializer
 
 from .models import Property, PropertyImage
@@ -74,3 +75,10 @@ class PropertySerializer(serializers.ModelSerializer):
             else None
         )
         return representation
+
+
+class PropertyDetailSerializer(PropertySerializer):
+    interested_leads = LeadPropertySerializer(many=True, read_only=True)
+
+    class Meta(PropertySerializer.Meta):
+        fields = PropertySerializer.Meta.fields + ["interested_leads"]
