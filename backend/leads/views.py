@@ -19,6 +19,8 @@ class LeadViewSet(viewsets.ModelViewSet):
         return LeadSerializer
 
     def get_queryset(self):
+        if getattr(self, "swagger_fake_view", False):
+            return Lead.objects.none()
         queryset = Lead.objects.select_related("assigned_to").all()
         if self.action == "retrieve":
             queryset = queryset.prefetch_related("property_interests__property")
@@ -44,6 +46,8 @@ class LeadPropertyViewSet(viewsets.ModelViewSet):
     filterset_fields = ["status", "lead", "property"]
 
     def get_queryset(self):
+        if getattr(self, "swagger_fake_view", False):
+            return LeadProperty.objects.none()
         queryset = LeadProperty.objects.select_related(
             "lead", "lead__assigned_to", "property"
         ).all()

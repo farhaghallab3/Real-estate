@@ -25,6 +25,8 @@ class ViewingViewSet(viewsets.ModelViewSet):
     filterset_fields = ["status", "assigned_to", "lead", "property"]
 
     def get_queryset(self):
+        if getattr(self, "swagger_fake_view", False):
+            return Viewing.objects.none()
         queryset = Viewing.objects.select_related("lead", "property", "assigned_to")
         user = self.request.user
         if not is_manager_or_admin(user):

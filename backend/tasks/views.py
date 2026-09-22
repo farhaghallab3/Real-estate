@@ -20,6 +20,8 @@ class TaskViewSet(viewsets.ModelViewSet):
     search_fields = ["title", "notes"]
 
     def get_queryset(self):
+        if getattr(self, "swagger_fake_view", False):
+            return Task.objects.none()
         queryset = Task.objects.select_related("assigned_to", "lead", "property")
         user = self.request.user
         if not is_manager_or_admin(user):

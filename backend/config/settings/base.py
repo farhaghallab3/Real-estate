@@ -3,6 +3,7 @@ Base settings shared by all environments.
 Environment-specific settings live in dev.py / prod.py.
 """
 
+from datetime import timedelta
 from pathlib import Path
 
 import environ
@@ -36,6 +37,9 @@ THIRD_PARTY_APPS = [
     "rest_framework",
     "corsheaders",
     "django_filters",
+    "rest_framework_simplejwt",
+    "rest_framework_simplejwt.token_blacklist",
+    "drf_spectacular",
 ]
 
 LOCAL_APPS = [
@@ -147,14 +151,87 @@ AUTH_USER_MODEL = "users.User"
 
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
         "rest_framework.authentication.SessionAuthentication",
-        "rest_framework.authentication.BasicAuthentication",
     ],
     "DEFAULT_PERMISSION_CLASSES": [
         "rest_framework.permissions.IsAuthenticated",
     ],
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
     "PAGE_SIZE": 20,
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+}
+
+
+# drf-spectacular
+# https://drf-spectacular.readthedocs.io/en/latest/settings.html
+
+SPECTACULAR_SETTINGS = {
+    "TITLE": "EstateFlow API",
+    "DESCRIPTION": "Real estate sales CRM API",
+    "VERSION": "1.0.0",
+    "SERVE_INCLUDE_SCHEMA": False,
+    # Several models each have their own distinct "status" field/choices;
+    # without this, drf-spectacular collides them all into one enum name.
+    # (Values are listed directly rather than as "module.Class.Status.choices"
+    # import-path strings, since drf-spectacular's path loader can only
+    # resolve one level of attribute nesting past the imported module.)
+    "ENUM_NAME_OVERRIDES": {
+        "LeadStatusEnum": [
+            ("new", "New"),
+            ("contacted", "Contacted"),
+            ("qualified", "Qualified"),
+            ("viewing", "Viewing"),
+            ("offer", "Offer"),
+            ("closed", "Closed"),
+            ("lost", "Lost"),
+        ],
+        "LeadPropertyStatusEnum": [
+            ("suggested", "Suggested"),
+            ("interested", "Interested"),
+            ("viewing_scheduled", "Viewing scheduled"),
+            ("rejected", "Rejected"),
+            ("offer_made", "Offer made"),
+            ("purchased", "Purchased"),
+        ],
+        "PropertyStatusEnum": [
+            ("available", "Available"),
+            ("reserved", "Reserved"),
+            ("under_offer", "Under offer"),
+            ("sold", "Sold"),
+            ("inactive", "Inactive"),
+        ],
+        "ViewingStatusEnum": [
+            ("scheduled", "Scheduled"),
+            ("completed", "Completed"),
+            ("cancelled", "Cancelled"),
+            ("no_show", "No show"),
+        ],
+        "DealStatusEnum": [
+            ("viewing", "Viewing"),
+            ("offer_made", "Offer made"),
+            ("negotiation", "Negotiation"),
+            ("under_contract", "Under contract"),
+            ("closed", "Closed"),
+            ("lost", "Lost"),
+        ],
+        "CommissionStatusEnum": [
+            ("pending", "Pending"),
+            ("approved", "Approved"),
+            ("paid", "Paid"),
+        ],
+    },
+}
+
+
+# djangorestframework-simplejwt
+# https://django-rest-framework-simplejwt.readthedocs.io/en/stable/settings.html
+
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=15),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
+    "ROTATE_REFRESH_TOKENS": True,
+    "BLACKLIST_AFTER_ROTATION": True,
 }
 
 

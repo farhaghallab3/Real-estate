@@ -30,6 +30,8 @@ class CommissionViewSet(
     filterset_fields = ["status", "salesperson"]
 
     def get_queryset(self):
+        if getattr(self, "swagger_fake_view", False):
+            return Commission.objects.none()
         queryset = Commission.objects.select_related(
             "deal", "deal__lead", "deal__property", "salesperson"
         )

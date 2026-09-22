@@ -20,6 +20,8 @@ class DealViewSet(viewsets.ModelViewSet):
         return DealSerializer
 
     def get_queryset(self):
+        if getattr(self, "swagger_fake_view", False):
+            return Deal.objects.none()
         queryset = Deal.objects.select_related("lead", "property", "salesperson")
         if self.action == "retrieve":
             queryset = queryset.prefetch_related("status_history__changed_by")

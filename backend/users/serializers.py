@@ -13,5 +13,5 @@ class UserBriefSerializer(serializers.ModelSerializer):
         model = User
         fields = ["id", "name"]
 
-    def get_name(self, obj):
+    def get_name(self, obj) -> str:
         return obj.get_full_name() or obj.username
