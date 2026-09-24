@@ -4,3 +4,6 @@ django-environ==0.14.0
 django-cors-headers==4.9.0
 django-filter==26.1
 psycopg2-binary==2.9.13
+pillow==12.3.0
+djangorestframework-simplejwt==5.5.1
+drf-spectacular==0.30.0

@@ -48,3 +48,35 @@ class Lead(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class LeadProperty(models.Model):
+    class Status(models.TextChoices):
+        SUGGESTED = "suggested", "Suggested"
+        INTERESTED = "interested", "Interested"
+        VIEWING_SCHEDULED = "viewing_scheduled", "Viewing scheduled"
+        REJECTED = "rejected", "Rejected"
+        OFFER_MADE = "offer_made", "Offer made"
+        PURCHASED = "purchased", "Purchased"
+
+    lead = models.ForeignKey(
+        Lead, on_delete=models.CASCADE, related_name="property_interests"
+    )
+    property = models.ForeignKey(
+        "properties.Property",
+        on_delete=models.CASCADE,
+        related_name="interested_leads",
+    )
+    status = models.CharField(
+        max_length=30, choices=Status.choices, default=Status.SUGGESTED
+    )
+    notes = models.TextField(blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        unique_together = ("lead", "property")
+        ordering = ["-created_at"]
+
+    def __str__(self):
+        return f"{self.lead.name} ↔ {self.property.title} ({self.status})"
