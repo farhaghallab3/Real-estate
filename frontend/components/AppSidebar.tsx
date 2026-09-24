@@ -65,19 +65,7 @@ export function AppSidebar() {
       </SidebarContent>
       <br className="border-2" />
       <SidebarFooter>
-        <SidebarProfile
-          user={{
-            name: "Name Placeholder",
-            email: "name@example.com",
-            jobTitle: "Job title",
-            imageUrl: "https://github.com/shadcn.png",
-          }}
-          onProfile={() => console.log("Open profile")}
-          onSettings={() => console.log("Open settings")}
-          onSubscription={() => console.log("Open subscription")}
-          onLogout={() => console.log("Log out")}
-          onLogin={() => console.log("Log in")}
-        />
+        <SidebarProfile />
       </SidebarFooter>
     </Sidebar>
   );
