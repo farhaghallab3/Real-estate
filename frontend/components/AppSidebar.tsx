@@ -21,7 +21,6 @@ export function AppSidebar() {
           </h1>
           <p className="text-sm tracking-widest uppercase mt-1">sales crm</p>
         </div>
-        {/* <ModeToggle /> */}
       </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
@@ -40,7 +39,7 @@ export function AppSidebar() {
             <Link href="/leads">Leads</Link>
           </SidebarGroupContent>
           <SidebarGroupContent className="w-full px-3 text-lg transition-colors hover:border-b-amber-400 hover:border-b hover:cursor-pointer">
-            Deals
+            <Link href="/deals">Deals</Link>
           </SidebarGroupContent>
         </SidebarGroup>
         <SidebarGroup>
@@ -48,7 +47,7 @@ export function AppSidebar() {
             PORTIFOLIO
           </SidebarGroupLabel>
           <SidebarGroupContent className="w-full px-3 text-lg transition-colors hover:border-b-amber-400 hover:border-b-1 hover:cursor-pointer">
-            Properties
+            <Link href="/properties">Properties</Link>
           </SidebarGroupContent>
         </SidebarGroup>
         <SidebarGroup>
