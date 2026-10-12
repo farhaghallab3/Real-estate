@@ -46,10 +46,6 @@ LOCAL_APPS = [
     "users",
     "leads",
     "properties",
-    "tasks",
-    "viewings",
-    "deals",
-    "commissions",
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -205,25 +201,6 @@ SPECTACULAR_SETTINGS = {
             ("under_offer", "Under offer"),
             ("sold", "Sold"),
             ("inactive", "Inactive"),
-        ],
-        "ViewingStatusEnum": [
-            ("scheduled", "Scheduled"),
-            ("completed", "Completed"),
-            ("cancelled", "Cancelled"),
-            ("no_show", "No show"),
-        ],
-        "DealStatusEnum": [
-            ("viewing", "Viewing"),
-            ("offer_made", "Offer made"),
-            ("negotiation", "Negotiation"),
-            ("under_contract", "Under contract"),
-            ("closed", "Closed"),
-            ("lost", "Lost"),
-        ],
-        "CommissionStatusEnum": [
-            ("pending", "Pending"),
-            ("approved", "Approved"),
-            ("paid", "Paid"),
         ],
     },
 }
