@@ -46,10 +46,6 @@ LOCAL_APPS = [
     "users",
     "leads",
     "properties",
-    "tasks",
-    "viewings",
-    "deals",
-    "commissions",
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -88,16 +84,21 @@ WSGI_APPLICATION = "config.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/stable/ref/settings/#databases
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": env("DB_NAME"),
-        "USER": env("DB_USER"),
-        "PASSWORD": env("DB_PASSWORD"),
-        "HOST": env("DB_HOST", default="localhost"),
-        "PORT": env("DB_PORT", default="5432"),
+# Hosted platforms (e.g. Render) provide a single DATABASE_URL; locally we
+# use the individual DB_* variables from .env.
+if env("DATABASE_URL", default=None):
+    DATABASES = {"default": env.db("DATABASE_URL")}
+else:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.postgresql",
+            "NAME": env("DB_NAME"),
+            "USER": env("DB_USER"),
+            "PASSWORD": env("DB_PASSWORD"),
+            "HOST": env("DB_HOST", default="localhost"),
+            "PORT": env("DB_PORT", default="5432"),
+        }
     }
-}
 
 
 # Password validation
@@ -200,25 +201,6 @@ SPECTACULAR_SETTINGS = {
             ("under_offer", "Under offer"),
             ("sold", "Sold"),
             ("inactive", "Inactive"),
-        ],
-        "ViewingStatusEnum": [
-            ("scheduled", "Scheduled"),
-            ("completed", "Completed"),
-            ("cancelled", "Cancelled"),
-            ("no_show", "No show"),
-        ],
-        "DealStatusEnum": [
-            ("viewing", "Viewing"),
-            ("offer_made", "Offer made"),
-            ("negotiation", "Negotiation"),
-            ("under_contract", "Under contract"),
-            ("closed", "Closed"),
-            ("lost", "Lost"),
-        ],
-        "CommissionStatusEnum": [
-            ("pending", "Pending"),
-            ("approved", "Approved"),
-            ("paid", "Paid"),
         ],
     },
 }
